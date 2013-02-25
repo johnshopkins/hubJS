@@ -1,11 +1,16 @@
 jQuery(document).ready(function ($) {
 
-	var settings = {
+	var callbacks = {
 		success: function (payload, status, jqXHR) {
+			console.log(payload);
 			console.log("custom success callback.");
+		},
+		error: function (jqXHR, status, error) {
+			console.log("custom error callback.");
 		}
 	};
 
-	payload = hubster.getArticles.byId(157, settings);
+	hub.init({version: 1});
+	hub.articles.related(785, callbacks);
 
 });
