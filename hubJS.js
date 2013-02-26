@@ -39,8 +39,8 @@ var hub = (function (global, $) {
 		articles: {
 
 			find: function(data, callbacks) {
-				// options: id, slug, topic, tag, issue, source, year
-				return _library.get("articles", data, callbacks);
+				var endpoint = data.id ? "articles/" + data.id : "articles";
+				return _library.get(endpoint, data, callbacks);
 			},
 
 			recent: function(data, callbacks) {
@@ -59,12 +59,12 @@ var hub = (function (global, $) {
 				_library.articles.find({id: id}, {
 					success: function (payload) {
 
-						var tags = payload._embedded.articles[0]._embedded.tags || [];
+						var tags = payload._embedded.tags || [];
 						var tagIds = tags.map(function(tag) {
 							return tag.id;
 						});
 
-						var topics = payload._embedded.articles[0]._embedded.topics || [];
+						var topics = payload._embedded.topics || [];
 						var topicIds = topics.map(function(topic) {
 							return topic.id;
 						});
