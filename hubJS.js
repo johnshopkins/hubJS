@@ -13,23 +13,8 @@ var hub = (function (global, $) {
 	var _defaultSettings = {
 		version: 0
 	};
+	
 
-	/**
-	 * Extract the IDs of all items in a given
-	 * embedded object; for example tags or topics.
-	 * 
-	 * @param  {object} payload Payload to extract embedded item IDs from
-	 * @param  {string} object   [description]
-	 * @return {array}        	IDs
-	 */
-	function extractEmbeddedItemIds(payload, object) {
-		var target = payload._embedded[object];
-		return target.map(function(object) {
-			return object.id;
-		});
-	}
-	
-	
 	return {
 
 		/**
@@ -122,8 +107,8 @@ var hub = (function (global, $) {
 				_library.articles.find({id: id}, {
 					success: function (payload) {
 
-						var tagIds = extractEmbeddedItemIds(payload, "tags");
-						var topicIds = extractEmbeddedItemIds(payload, "topics");
+						var tagIds = _library.utility.extractEmbeddedItemIds(payload, "tags");
+						var topicIds = _library.utility.extractEmbeddedItemIds(payload, "topics");
 
 						// First try to get articles related by tag
 						_library.articles.find({tags: tagIds.join(","), excluded_ids: id}, {
@@ -145,6 +130,28 @@ var hub = (function (global, $) {
 							}
 						});
 					}
+				});
+			}
+		},
+
+		/**
+	     * Utility methods
+	     * @type {Object}
+	     */
+		utility: {
+
+			/**
+			 * Extract the IDs of all items in a given
+			 * embedded object; for example tags or topics.
+			 * 
+			 * @param  {object} payload Payload to extract embedded item IDs from
+			 * @param  {string} object  Target object (like "tags")
+			 * @return {array}        	IDs
+			 */
+			extractEmbeddedItemIds: function(payload, object) {
+				var target = (payload && payload._embedded && payload._embedded[object]) || [];
+				return target.map(function(object) {
+					return object.id;
 				});
 			}
 		}
