@@ -104,27 +104,29 @@ var hub = (function (global, $) {
 			 * @return {jqXHR}    				See: http://api.jquery.com/jQuery.ajax/#jqXHR
 			 */
 			related: function(id, callbacks) {
+
+				var checkPayload = function(payload, callback) {
+					if (payload._embedded.articles) {
+						callbacks.success(payload);
+						return;
+					}
+				};
+
 				_library.articles.find({id: id}, {
 					success: function (payload) {
 
 						var tagIds = _library.utility.extractEmbeddedItemIds(payload, "tags");
 						var topicIds = _library.utility.extractEmbeddedItemIds(payload, "topics");
 
-						// First try to get articles related by tag
+						// Tag relations
 						_library.articles.find({tags: tagIds.join(","), excluded_ids: id}, {
 							success: function (payload) {
-								if (payload._embedded.articles) {
-									callbacks.success(payload);
-									return;
-								}
+								checkPayload(payload);
 
-								// If no articles related by tag, try topics
+								// Topic relations
 								_library.articles.find({topics: topicIds.join(","), excluded_ids: id}, {
 									success: function (payload) {
-										if (payload._embedded.articles) {
-											callbacks.success(payload);
-											return;
-										}
+										checkPayload(payload);
 									}
 								});
 							}
