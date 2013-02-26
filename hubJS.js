@@ -15,6 +15,22 @@ var hub = (function (global, $) {
 	var _defaultSettings = {
 		version: 0
 	};
+
+	/**
+	 * Extract the IDs of all items in a given
+	 * embedded object; for example tags or topics.
+	 * 
+	 * @param  {object} payload Payload to extract embedded item IDs from
+	 * @param  {string} object   [description]
+	 * @return {array}        	IDs
+	 */
+	function extractEmbeddedItemIds(payload, object) {
+		var target = payload._embedded[object];
+		return target.map(function(object) {
+			return object.id;
+		});
+	}
+	
 	
 	return {
 
@@ -59,15 +75,8 @@ var hub = (function (global, $) {
 				_library.articles.find({id: id}, {
 					success: function (payload) {
 
-						var tags = payload._embedded.tags || [];
-						var tagIds = tags.map(function(tag) {
-							return tag.id;
-						});
-
-						var topics = payload._embedded.topics || [];
-						var topicIds = topics.map(function(topic) {
-							return topic.id;
-						});
+						var tagIds = extractEmbeddedItemIds(payload, "tags");
+						var topicIds = extractEmbeddedItemIds(payload, "topics");
 
 						// First try to get articles related by tag
 						_library.articles.find({tags: tagIds.join(","), excluded_ids: id}, {
