@@ -11,9 +11,17 @@ var hub = (function (global, $) {
 	 * @type {Object}
 	 */
 	var _defaultSettings = {
-		version: 0
+		version: 0,
+		env: "production"
 	};
+
+	var _apiUrl;
 	
+	function buildApiUrl() {
+		var prefix = _library.userSettings.env == "development" ? "local." : "";
+		_apiUrl = "http://" + prefix + "api.hub.jhu.edu/";
+	}
+
 
 	return {
 
@@ -32,6 +40,7 @@ var hub = (function (global, $) {
 		init: function (settings) {
 			_library = this;
 			_library.userSettings = $.extend({}, _defaultSettings, settings);
+			buildApiUrl();
 		},
 
 		/**
@@ -47,7 +56,7 @@ var hub = (function (global, $) {
 			data.v = _library.userSettings.version;
 
 	        return $.ajax({
-	            url: "http://api.hub.jhu.edu/" + endpoint,
+	            url: _apiUrl + endpoint,
 	            dataType: "jsonP",
 	            data: data,
 	            success: callbacks && callbacks.success,
