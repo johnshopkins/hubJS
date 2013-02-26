@@ -1,5 +1,9 @@
 var hub = (function (global, $) {
 
+	/**
+	 * Hub library object for reference inside
+	 * return object.
+	 */
 	var _library;
 
 	/**
@@ -34,11 +38,25 @@ var hub = (function (global, $) {
 	
 	return {
 
+		/**
+		 * Initialize the Hub library.
+		 * 
+		 * @param  {object} settings
+		 * @return null
+		 */
 		init: function (settings) {
 			_settings = $.extend(_defaultSettings, settings);
 			_library = this;
 		},
 
+		/**
+		 * Gets a payload from the Hub API
+		 * 
+		 * @param  {string} endpoint  	API endpoint
+		 * @param  {object} data     	Data to be sent to the server
+		 * @param  {object} callbacks 	Success and error callback definitions
+		 * @return {jqXHR}    			See: http://api.jquery.com/jQuery.ajax/#jqXHR
+		 */
 		get: function(endpoint, data, callbacks) {
 
 			data.v = _settings.version;
@@ -52,25 +70,54 @@ var hub = (function (global, $) {
 	        });
 	    },
 
+	    /**
+	     * Articles methods
+	     * @type {Object}
+	     */
 		articles: {
 
+			/**
+			 * Find an article or articles
+			 * 
+			 * @param  {object} data     	Data to be sent to the server
+			 * @param  {object} callbacks 	Success and error callback definitions
+			 * @return {jqXHR}    			See: http://api.jquery.com/jQuery.ajax/#jqXHR
+			 */
 			find: function(data, callbacks) {
 				var endpoint = data.id ? "articles/" + data.id : "articles";
 				return _library.get(endpoint, data, callbacks);
 			},
 
+			/**
+			 * Find recent articles
+			 * 
+			 * @param  {object} data     	Data to be sent to the server
+			 * @param  {object} callbacks 	Success and error callback definitions
+			 * @return {jqXHR}    			See: http://api.jquery.com/jQuery.ajax/#jqXHR
+			 */
 			recent: function(data, callbacks) {
 				return _library.articles.find(data, callbacks);
 			},
 
+			/**
+			 * Find popular articles
+			 * 
+			 * @param  {object} data     	Data to be sent to the server
+			 * @param  {object} callbacks 	Success and error callback definitions
+			 * @return {jqXHR}    			See: http://api.jquery.com/jQuery.ajax/#jqXHR
+			 */
 			popular: function(data, callbacks) {
-
-				// Add order_by and score to data object with precedence
 				data = $.extend({}, data, { order_by: "score", score: "trending" });
-
 				return _library.get("articles", data, callbacks);
 			},
 
+			/**
+			 * Find articles related to a specific article
+			 * 
+			 * @param  {[integer]} 	id        	ID of article to lookup other articles against
+			 * @param  {object} 	callbacks 	Success and error callback definitions
+			 * @return {jqXHR}    				See: http://api.jquery.com/jQuery.ajax/#jqXHR
+			 */
 			related: function(id, callbacks) {
 				_library.articles.find({id: id}, {
 					success: function (payload) {
