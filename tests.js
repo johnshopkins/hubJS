@@ -1,7 +1,7 @@
 /**
  * Unit testing
  */
-test("Test version -- hub.init()", function ()
+test("hub.init() : version", function ()
 {
 	hub.init({});
 	equal(JSON.stringify(hub.userSettings), JSON.stringify({version: 0, env: "production"}));
@@ -13,13 +13,7 @@ test("Test version -- hub.init()", function ()
 	equal(JSON.stringify(hub.userSettings), JSON.stringify({version: 1, env: "production"}));
 });
 
-test("Test additional params -- hub.init()", function ()
-{
-	hub.init({key: "value"});
-	equal(JSON.stringify(hub.userSettings), JSON.stringify({version: 0, env: "production", key: "value"}));
-});
-
-test("Test environment -- hub.init()", function ()
+test("hub.init() : env", function ()
 {
 	hub.init({});
 	equal(JSON.stringify(hub.userSettings), JSON.stringify({version: 0, env: "production"}));
@@ -29,6 +23,12 @@ test("Test environment -- hub.init()", function ()
 
 	hub.init({env: "development"});
 	equal(JSON.stringify(hub.userSettings), JSON.stringify({version: 0, env: "development"}));
+});
+
+test("hub.init() : additional params", function ()
+{
+	hub.init({key: "value"});
+	equal(JSON.stringify(hub.userSettings), JSON.stringify({version: 0, env: "production", key: "value"}));
 });
 
 test("hub.extractEmbeddedItemIds()", function ()
