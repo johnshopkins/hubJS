@@ -7,12 +7,6 @@ var hub = (function (global, $) {
 	var _library;
 
 	/**
-	 * User defined settings
-	 * @type {Object}
-	 */
-	var _settings = {};
-
-	/**
 	 * Default settings
 	 * @type {Object}
 	 */
@@ -39,14 +33,20 @@ var hub = (function (global, $) {
 	return {
 
 		/**
+		 * User defined settings
+		 * @type {Object}
+		 */
+		userSettings: {},
+
+		/**
 		 * Initialize the Hub library.
 		 * 
 		 * @param  {object} settings
 		 * @return null
 		 */
 		init: function (settings) {
-			_settings = $.extend(_defaultSettings, settings);
 			_library = this;
+			_library.userSettings = $.extend({}, _defaultSettings, settings);
 		},
 
 		/**
@@ -59,7 +59,7 @@ var hub = (function (global, $) {
 		 */
 		get: function(endpoint, data, callbacks) {
 
-			data.v = _settings.version;
+			data.v = _library.userSettings.version;
 
 	        return $.ajax({
 	            url: "http://api.hub.jhu.edu/" + endpoint,
