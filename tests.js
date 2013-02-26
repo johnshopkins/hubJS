@@ -1,22 +1,34 @@
 /**
  * Unit testing
  */
-test("hub.init()", function ()
+test("Test version -- hub.init()", function ()
 {
 	hub.init({});
-	equal(JSON.stringify(hub.userSettings), JSON.stringify({version: 0}));
+	equal(JSON.stringify(hub.userSettings), JSON.stringify({version: 0, env: "production"}));
 
 	hub.init({version:0});
-	equal(JSON.stringify(hub.userSettings), JSON.stringify({version: 0}));
+	equal(JSON.stringify(hub.userSettings), JSON.stringify({version: 0, env: "production"}));
 
 	hub.init({version: 1});
-	equal(JSON.stringify(hub.userSettings), JSON.stringify({version: 1}));
+	equal(JSON.stringify(hub.userSettings), JSON.stringify({version: 1, env: "production"}));
+});
 
-	hub.init({another: "test"});
-	equal(JSON.stringify(hub.userSettings), JSON.stringify({version: 0, another: "test"}));
+test("Test additional params -- hub.init()", function ()
+{
+	hub.init({key: "value"});
+	equal(JSON.stringify(hub.userSettings), JSON.stringify({version: 0, env: "production", key: "value"}));
+});
 
-	hub.init({version:1, another: "test"});
-	equal(JSON.stringify(hub.userSettings), JSON.stringify({version: 1, another: "test"}));
+test("Test environment -- hub.init()", function ()
+{
+	hub.init({});
+	equal(JSON.stringify(hub.userSettings), JSON.stringify({version: 0, env: "production"}));
+
+	hub.init({env: "production"});
+	equal(JSON.stringify(hub.userSettings), JSON.stringify({version: 0, env: "production"}));
+
+	hub.init({env: "development"});
+	equal(JSON.stringify(hub.userSettings), JSON.stringify({version: 0, env: "development"}));
 });
 
 test("hub.extractEmbeddedItemIds()", function ()
@@ -59,7 +71,7 @@ test("hub.extractEmbeddedItemIds()", function ()
 // 		}
 // 	};
 
-// 	hub.init({version: 1});
+// 	hub.init({version: 1, env: "development"});
 // 	hub.articles.related(785, callbacks);
 
 // });
