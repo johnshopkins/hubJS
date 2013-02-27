@@ -59,6 +59,11 @@ var hub = (function (global, $) {
 			data = $.extend({}, data);
 			data.v = _library.userSettings.version;
 
+			if (data.id) {
+				endpoint = endpoint + "/" + data.id;
+				delete data.id;
+			}
+
 	        return $.ajax({
 	            url: _apiUrl + endpoint,
 	            dataType: "jsonP",
@@ -83,12 +88,7 @@ var hub = (function (global, $) {
 			 */
 			find: function(data, callback) {
 				data = $.extend({}, data);
-				var endpoint = "articles";
-				if (data.id) {
-					endpoint = "articles/" + data.id;
-					delete data.id;
-				}
-				return _library.get(endpoint, data, callbacks);
+				return _library.get("articles", data, callback);
 			},
 
 			/**
