@@ -121,34 +121,27 @@ var hub = (function (global, $) {
 			 */
 			related: function(id, callbacks) {
 
-				var checkPayload = function(payload, callback) {
-					if (payload._embedded.articles) {
-						callbacks.success(payload);
-						return;
+				var toReturn;
+
+				var article = _library.articles.find({id: id});
+
+				var relatedByTags = article.then(function (data) {
+						var tagIds = _library.utility.extractEmbeddedItemIds(data, "tags");					
+						return _library.articles.find({tags: tagIds.join(","), excluded_ids: id});
 					}
-				};
+				);
 
-				_library.articles.find({id: id}, {
-					success: function (payload) {
-
-						var tagIds = _library.utility.extractEmbeddedItemIds(payload, "tags");
-						var topicIds = _library.utility.extractEmbeddedItemIds(payload, "topics");
-
-						// Tag relations
-						_library.articles.find({tags: tagIds.join(","), excluded_ids: id}, {
-							success: function (payload) {
-								checkPayload(payload);
-
-								// Topic relations
-								_library.articles.find({topics: topicIds.join(","), excluded_ids: id}, {
-									success: function (payload) {
-										checkPayload(payload);
-									}
-								});
-							}
-						});
+				var relatedByTopics = article.then(function (data) {
+						var topicIds = _library.utility.extractEmbeddedItemIds(data, "topics");
+						return relatedByTopics = _library.articles.find({topics: topicIds.join(","), excluded_ids: id});
 					}
+				);
+				 
+				relatedByTags.done(function (data) {
+					var toReturn = (data._embedded.articles) ? "tags" : "topics";
 				});
+
+				return (toReturn == "tags") ? relatedByTags.done() : relatedByTopics.done();
 			}
 		},
 
