@@ -53,6 +53,7 @@ var hub = (function (global, $) {
 		 */
 		get: function(endpoint, data, callbacks) {
 
+			data = $.extend({}, data);
 			data.v = _library.userSettings.version;
 
 	        return $.ajax({
@@ -78,7 +79,12 @@ var hub = (function (global, $) {
 			 * @return {jqXHR}    			See: http://api.jquery.com/jQuery.ajax/#jqXHR
 			 */
 			find: function(data, callbacks) {
-				var endpoint = data.id ? "articles/" + data.id : "articles";
+				data = $.extend({}, data);
+				var endpoint = "articles";
+				if (data.id) {
+					endpoint = "articles/" + data.id;
+					delete data.id;
+				}
 				return _library.get(endpoint, data, callbacks);
 			},
 
@@ -90,6 +96,7 @@ var hub = (function (global, $) {
 			 * @return {jqXHR}    			See: http://api.jquery.com/jQuery.ajax/#jqXHR
 			 */
 			recent: function(data, callbacks) {
+				data = $.extend({}, data);
 				return _library.articles.find(data, callbacks);
 			},
 
