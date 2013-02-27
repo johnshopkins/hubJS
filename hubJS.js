@@ -138,12 +138,12 @@ var hub = (function (global, $) {
 						return relatedByTopics = _library.articles.find({topics: topicIds.join(","), excluded_ids: id});
 					}
 				);
-				 
+
 				relatedByTags.done(function (data) {
-					var toReturn = (data._embedded.articles) ? "tags" : "topics";
+					toReturn = (data._embedded.articles) ? "tags" : "topics";
 				});
 
-				return (toReturn == "tags") ? relatedByTags.done() : relatedByTopics.done();
+				return (toReturn == "tags") ? relatedByTags.done(callback) : relatedByTopics.done(callback);
 			}
 		},
 
