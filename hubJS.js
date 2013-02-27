@@ -12,7 +12,10 @@ var hub = (function (global, $) {
 	 */
 	var _defaultSettings = {
 		version: 0,
-		env: "production"
+		env: "production",
+		error: function() {
+			console.log("An error of the fatal kind has occured.");
+		}
 	};
 
 	var _apiUrl;
@@ -46,12 +49,12 @@ var hub = (function (global, $) {
 		/**
 		 * Gets a payload from the Hub API
 		 * 
-		 * @param  {string} endpoint  	API endpoint
-		 * @param  {object} data     	Data to be sent to the server
-		 * @param  {object} callbacks 	Success and error callback definitions
-		 * @return {jqXHR}    			See: http://api.jquery.com/jQuery.ajax/#jqXHR
+		 * @param  {string} 	endpoint  	API endpoint
+		 * @param  {object} 	data     	Data to be sent to the server
+		 * @param  {function} 	callback 	Function to run when request is successful
+		 * @return {jqXHR}    				See: http://api.jquery.com/jQuery.ajax/#jqXHR
 		 */
-		get: function(endpoint, data, callbacks) {
+		get: function(endpoint, data, callback) {
 
 			data = $.extend({}, data);
 			data.v = _library.userSettings.version;
@@ -60,8 +63,8 @@ var hub = (function (global, $) {
 	            url: _apiUrl + endpoint,
 	            dataType: "jsonP",
 	            data: data,
-	            success: callbacks && callbacks.success,
-	            error: callbacks && callbacks.error
+	            success: callback,
+	            error: _library.userSettings.error
 	        });
 	    },
 
@@ -74,11 +77,11 @@ var hub = (function (global, $) {
 			/**
 			 * Find an article or articles
 			 * 
-			 * @param  {object} data     	Data to be sent to the server
-			 * @param  {object} callbacks 	Success and error callback definitions
-			 * @return {jqXHR}    			See: http://api.jquery.com/jQuery.ajax/#jqXHR
+			 * @param  {object} 	data     	Data to be sent to the server
+			 * @param  {function} 	callback 	Function to run when request is successful
+			 * @return {jqXHR}    				See: http://api.jquery.com/jQuery.ajax/#jqXHR
 			 */
-			find: function(data, callbacks) {
+			find: function(data, callback) {
 				data = $.extend({}, data);
 				var endpoint = "articles";
 				if (data.id) {
@@ -91,36 +94,35 @@ var hub = (function (global, $) {
 			/**
 			 * Find recent articles
 			 * 
-			 * @param  {object} data     	Data to be sent to the server
-			 * @param  {object} callbacks 	Success and error callback definitions
-			 * @return {jqXHR}    			See: http://api.jquery.com/jQuery.ajax/#jqXHR
+			 * @param  {object} 	data     	Data to be sent to the server
+			 * @param  {function} 	callback 	Function to run when request is successful
+			 * @return {jqXHR}    				See: http://api.jquery.com/jQuery.ajax/#jqXHR
 			 */
-			recent: function(data, callbacks) {
+			recent: function(data, callback) {
 				data = $.extend({}, data);
-				return _library.articles.find(data, callbacks);
+				return _library.articles.find(data, callback);
 			},
 
 			/**
 			 * Find popular articles
 			 * 
-			 * @param  {object} data     	Data to be sent to the server
-			 * @param  {object} callbacks 	Success and error callback definitions
-			 * @return {jqXHR}    			See: http://api.jquery.com/jQuery.ajax/#jqXHR
+			 * @param  {object} 	data     	Data to be sent to the server
+			 * @param  {function} 	callback 	Function to run when request is successful
+			 * @return {jqXHR}    				See: http://api.jquery.com/jQuery.ajax/#jqXHR
 			 */
-			popular: function(data, callbacks) {
+			popular: function(data, callback) {
 				data = $.extend({}, data, { order_by: "score", score: "trending" });
-				return _library.get("articles", data, callbacks);
+				return _library.get("articles", data, callback);
 			},
 
 			/**
 			 * Find articles related to a specific article
 			 * 
-			 * @param  {[integer]} 	id        	ID of article to lookup other articles against
-			 * @param  {object} 	callbacks 	Success and error callback definitions
-			 * @return {jqXHR}    				See: http://api.jquery.com/jQuery.ajax/#jqXHR
+			 * @param  {integer} 	id        	ID of article to lookup other articles against
+			 * @param  {function} 	callback 	Function to run when request is successful
+			 * @return {deferred}    			See: http://api.jquery.com/category/deferred-object/
 			 */
-			related: function(id, callbacks) {
-
+			related: function(id, callback) {
 				var toReturn;
 
 				var article = _library.articles.find({id: id});
