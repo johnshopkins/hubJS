@@ -1,4 +1,4 @@
-var hub = (function (global, $) {
+var hubJS = (function (global, $) {
 
 	/**
 	 * Hub library object for reference inside
