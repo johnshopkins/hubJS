@@ -7,15 +7,15 @@
  * Initialization settings object
  * @type {Object}
  */
-var init = {
-	version: 0,
-	env: "development"
-}
+// var init = {
+// 	version: 0,
+// 	env: "development"
+// }
 
 // production
-// var init = {
-// 	version: 1
-// }
+var init = {
+	version: 1
+}
 
 
 
