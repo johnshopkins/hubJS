@@ -7,14 +7,8 @@
  * Initialization settings object
  * @type {Object}
  */
-// var init = {
-// 	version: 0,
-// 	env: "development"
-// }
-
-// production
 var init = {
-	version: 1
+	version: 0
 }
 
 
