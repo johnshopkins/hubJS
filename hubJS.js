@@ -12,18 +12,10 @@ var hubJS = (function (global, $) {
 	 */
 	var _defaultSettings = {
 		version: 0,
-		env: "production",
 		error: function() {
 			console.log("An error of the fatal kind has occured.");
 		}
 	};
-
-	var _apiUrl;
-	
-	function buildApiUrl() {
-		var prefix = _library.userSettings.env == "development" ? "local." : "";
-		_apiUrl = "http://" + prefix + "api.hub.jhu.edu/";
-	}
 
 
 	return {
@@ -35,6 +27,12 @@ var hubJS = (function (global, $) {
 		userSettings: {},
 
 		/**
+		 * API base URL
+		 * @type {String}
+		 */
+		baseUrl: "http://api.hub.jhu.edu/",
+
+		/**
 		 * Initialize the Hub library.
 		 * 
 		 * @param  {object} settings
@@ -43,7 +41,6 @@ var hubJS = (function (global, $) {
 		init: function (settings) {
 			_library = this;
 			_library.userSettings = $.extend({}, _defaultSettings, settings);
-			buildApiUrl();
 		},
 
 		/**
@@ -65,7 +62,7 @@ var hubJS = (function (global, $) {
 			}
 
 	        return $.ajax({
-	            url: _apiUrl + endpoint,
+	            url: _library.baseUrl + endpoint,
 	            dataType: "jsonP",
 	            data: data,
 	            success: callback,

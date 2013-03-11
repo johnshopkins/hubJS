@@ -15,29 +15,18 @@ var init = {
 
 test("hubJS.init() : version", function () {
 	hubJS.init({});
-	equal(JSON.stringify(hubJS.userSettings), JSON.stringify({version: 0, env: "production"}));
+	equal(JSON.stringify(hubJS.userSettings), JSON.stringify({version: 0}));
 
 	hubJS.init({version:0});
-	equal(JSON.stringify(hubJS.userSettings), JSON.stringify({version: 0, env: "production"}));
+	equal(JSON.stringify(hubJS.userSettings), JSON.stringify({version: 0}));
 
 	hubJS.init({version: 1});
-	equal(JSON.stringify(hubJS.userSettings), JSON.stringify({version: 1, env: "production"}));
-});
-
-test("hubJS.init() : env", function () {
-	hubJS.init({});
-	equal(JSON.stringify(hubJS.userSettings), JSON.stringify({version: 0, env: "production"}));
-
-	hubJS.init({env: "production"});
-	equal(JSON.stringify(hubJS.userSettings), JSON.stringify({version: 0, env: "production"}));
-
-	hubJS.init({env: "development"});
-	equal(JSON.stringify(hubJS.userSettings), JSON.stringify({version: 0, env: "development"}));
+	equal(JSON.stringify(hubJS.userSettings), JSON.stringify({version: 1}));
 });
 
 test("hubJS.init() : additional params", function () {
 	hubJS.init({key: "value"});
-	equal(JSON.stringify(hubJS.userSettings), JSON.stringify({version: 0, env: "production", key: "value"}));
+	equal(JSON.stringify(hubJS.userSettings), JSON.stringify({version: 0, key: "value"}));
 });
 
 test("hubJS.extractEmbeddedItemIds()", function () {
