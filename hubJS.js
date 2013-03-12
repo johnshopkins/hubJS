@@ -122,7 +122,11 @@ var hubJS = (function (global, $) {
 			 */
 			related: function(id, data, callback) {
 
-				var data = $.extend({}, data, { excluded_ids: id });
+				// if the user passed additional related IDs, merge them with ours
+				var ids = data && data.excluded_ids ? id + "," + data.excluded_ids : id;
+
+				var data = $.extend({}, data, { excluded_ids: ids });
+
 				var toReturn;
 				
 				var article = _library.articles.find({id: id});

@@ -140,6 +140,16 @@ asyncTest("hubJS.articles.related(): get back two articles", function () {
 	});
 });
 
+asyncTest("hubJS.articles.related(): with a passed excluded ID", function () {
+	hubJS.init(init);
+	var response = hubJS.articles.related(157, { excluded_ids: 123 });
+	response.done(function (payload) {
+		var length = payload._embedded.articles.length;
+		equal(length, 5);
+		start();
+	});
+});
+
 
 /**
  * Manual testing for callbacks
