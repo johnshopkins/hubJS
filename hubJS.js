@@ -116,28 +116,31 @@ var hubJS = (function (global, $) {
 			 * Find articles related to a specific article
 			 * 
 			 * @param  {integer} 	id        	ID of article to lookup other articles against
+			 * @param  {object} 	data     	Data to be sent to the server
 			 * @param  {function} 	callback 	Function to run when request is successful
 			 * @return {deferred}    			See: http://api.jquery.com/category/deferred-object/
 			 */
-			related: function(id, callback) {
-				var toReturn;
+			related: function(id, data, callback) {
 
+				var data = $.extend({}, data, { excluded_ids: id });
+				var toReturn;
+				
 				var article = _library.articles.find({id: id});
 
-				var relatedByTags = article.then(function (data) {
-						var tagIds = _library.utility.extractEmbeddedItemIds(data, "tags");					
-						return _library.articles.find({tags: tagIds.join(","), excluded_ids: id});
-					}
-				);
+				var relatedByTags = article.then(function (payload) {
+					var tagIds = _library.utility.extractEmbeddedItemIds(payload, "tags");
+					var tagData = $.extend({}, data, { tags: tagIds.join(",") });
+					return _library.articles.find(tagData);
+				});
 
-				var relatedByTopics = article.then(function (data) {
-						var topicIds = _library.utility.extractEmbeddedItemIds(data, "topics");
-						return relatedByTopics = _library.articles.find({topics: topicIds.join(","), excluded_ids: id});
-					}
-				);
+				var relatedByTopics = article.then(function (payload) {
+					var topicIds = _library.utility.extractEmbeddedItemIds(payload, "topics");
+					var topicData = $.extend({}, data, { topics: topicIds.join(",") });
+					return relatedByTopics = _library.articles.find(topicData);
+				});
 
-				relatedByTags.done(function (data) {
-					toReturn = (data._embedded.articles) ? "tags" : "topics";
+				relatedByTags.done(function (payload) {
+					toReturn = (payload._embedded.articles) ? "tags" : "topics";
 				});
 
 				return (toReturn == "tags") ? relatedByTags.done(callback) : relatedByTopics.done(callback);

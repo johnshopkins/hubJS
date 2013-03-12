@@ -130,6 +130,16 @@ asyncTest("hubJS.articles.related()", function () {
 	});
 });
 
+asyncTest("hubJS.articles.related(): get back two articles", function () {
+	hubJS.init(init);
+	var response = hubJS.articles.related(157, { per_page: 2});
+	response.done(function (payload) {
+		var length = payload._embedded.articles.length;
+		equal(length, 2);
+		start();
+	});
+});
+
 
 /**
  * Manual testing for callbacks
