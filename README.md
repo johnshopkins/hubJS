@@ -103,20 +103,23 @@ hubJS.articles.popular({
 });
 ```
 
-### hub.JS.articles.related(data, callback)
+### hub.JS.articles.related(id, data, callback)
 
 Finds articles related to a given article. Relationships are made first by common tags. If there are no tag relationships, topic relationships are searched for.
 
 ##### Parameters
 
 1. __id__ {Integer} Required. ID of the article to lookup other articles against.
+1. __data__ {PlainObject} Optional. A set of key/value pairs that filter the pool of articles returned. See available filters below.
 1. __callback__ {Lamdba(data, jqXHR)} Optional. Callback that fires upon successful retrieval of data.
 
 ##### Example
 
 ```javascript
-// Returns articles related to article #157
-hubJS.articles.related(157);
+// Returns two articles related to article #157
+hubJS.articles.related(157, {
+	per_page: 2
+});
 
 // Returns articles related to article #157 and fires a callback when returned
 hubJS.articles.popular(157, function(data, jqXHR) {
