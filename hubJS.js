@@ -53,7 +53,7 @@ var hubJS = (function (global, $) {
 		 */
 		get: function(endpoint, data, callback) {
 
-			data = $.extend({}, data);
+			var data = $.extend({}, data);
 			data.v = _library.userSettings.version;
 
 			if (data.id) {
@@ -84,7 +84,7 @@ var hubJS = (function (global, $) {
 			 * @return {jqXHR}    				See: http://api.jquery.com/jQuery.ajax/#jqXHR
 			 */
 			find: function(data, callback) {
-				data = $.extend({}, data);
+				var data = $.extend({}, data);
 				return _library.get("articles", data, callback);
 			},
 
@@ -96,7 +96,7 @@ var hubJS = (function (global, $) {
 			 * @return {jqXHR}    				See: http://api.jquery.com/jQuery.ajax/#jqXHR
 			 */
 			recent: function(data, callback) {
-				data = $.extend({}, data);
+				var data = $.extend({}, data);
 				return _library.articles.find(data, callback);
 			},
 
@@ -108,7 +108,7 @@ var hubJS = (function (global, $) {
 			 * @return {jqXHR}    				See: http://api.jquery.com/jQuery.ajax/#jqXHR
 			 */
 			popular: function(data, callback) {
-				data = $.extend({}, data, { order_by: "score", score: "trending" });
+				var data = $.extend({}, data, { order_by: "score", score: "trending" });
 				return _library.get("articles", data, callback);
 			},
 
