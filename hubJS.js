@@ -89,7 +89,7 @@ var hubJS = (function (global, $) {
 			},
 
 			/**
-			 * Find recent articles
+			 * Convenience method to find recent articles
 			 * 
 			 * @param  {object} 	data     	Data to be sent to the server
 			 * @param  {function} 	callback 	Function to run when request is successful
