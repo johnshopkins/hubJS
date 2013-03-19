@@ -11,10 +11,7 @@ var hubJS = (function (global, $) {
 	 * @type {Object}
 	 */
 	var _defaultSettings = {
-		version: 0,
-		error: function() {
-			console.log("An error of the fatal kind has occured.");
-		}
+		version: 0
 	};
 
 
