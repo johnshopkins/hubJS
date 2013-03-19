@@ -63,7 +63,7 @@ var hubJS = (function (global, $) {
 	            dataType: "jsonP",
 	            data: data,
 	            success: callback,
-	            error: _library.userSettings.error
+	            fail: _library.userSettings.fail
 	        });
 	    },
 

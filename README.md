@@ -30,15 +30,15 @@ Initializes hubJS with user settings. This method must run before any other meth
 
 ##### Available settings
 1. __version__ {Int} API version
-1. __error__ {Lambda(jqXHR, error)} Error callback function
+1. __fail__ {Lambda(jqXHR, textStatus, errorThrown)} Failed request callback function
 
 ##### Example
 
 ```javascript
 hubJS.init({
 	version: 0,
-	error: function(jqXHR, error) {
-		console.log("error found: " + error);
+	fail: function(jqXHR, textStatus, errorThrown) {
+		console.log("Error found: " + errorThrown);
 	)
 });
 ```
