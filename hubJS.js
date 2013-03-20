@@ -89,11 +89,11 @@ var hubJS = (function (global, $) {
 			 * Convenience method to find recent articles
 			 * 
 			 * @param  {object} 	data     	Data to be sent to the server
-			 * @param  {function} 	callback 	Function to run when request is successful
+			 * @param  {integer} 	count	 	Number of articles to retrieve
 			 * @return {jqXHR}    				See: http://api.jquery.com/jQuery.ajax/#jqXHR
 			 */
-			recent: function(data, callback) {
-				var data = $.extend({}, data);
+			recent: function(count, callback) {
+				var data = { per_page: count };
 				return _library.articles.find(data, callback);
 			},
 

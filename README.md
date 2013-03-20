@@ -71,9 +71,9 @@ hubJS.articles.find({
 ```
 
 
-### hubJS.articles.	recent(data, callback)
+### hubJS.articles.recent(count, callback)
 
-Retrieves rencent articles. __What exactly is the point of this? I cannot remember__
+Retrieves rencent articles.
 
 
 ### hubJS.articles.popular(data, callback)

@@ -108,9 +108,9 @@ asyncTest("hubJS.articles.find() : lookup with ID", function () {
 
 asyncTest("hubJS.articles.recent()", function () {
 	hubJS.init(init);
-	var response = hubJS.articles.recent({}, function (payload) {
+	var response = hubJS.articles.recent(2, function (payload) {
 		var length = payload._embedded.articles.length;
-		equal(length, 5);
+		equal(length, 2);
 		start();
 	});
 });
