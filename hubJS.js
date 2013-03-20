@@ -93,7 +93,7 @@ var hubJS = (function (global, $) {
 			 * @return {jqXHR}    				See: http://api.jquery.com/jQuery.ajax/#jqXHR
 			 */
 			recent: function(count, callback) {
-				var data = { per_page: count };
+				var data = $.extend({}, { per_page: 5 }, { per_page: count });
 				return _library.articles.find(data, callback);
 			},
 

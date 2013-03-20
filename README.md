@@ -77,7 +77,7 @@ Retrieves rencent articles.
 
 ##### Parameters
 
-1. __count__ {Integer} Required. Number of articles to retrieve
+1. __count__ {Integer} Optional. Number of articles to retrieve. Defaults to 5.
 1. __callback__ {Lamdba(data, textStatus, jqXHR)} Optional. Callback that fires upon successful retrieval of data.
 
 ##### Example
