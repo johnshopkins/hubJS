@@ -49,7 +49,7 @@ Retrieves articles based on passed data.
 ##### Parameters
 
 1. __data__ {PlainObject} Optional. A set of key/value pairs that filter the pool of articles returned. See available filters below.
-1. __callback__ {Lamdba(data, jqXHR)} Optional. Callback that fires upon successful retrieval of data.
+1. __callback__ {Lamdba(data, textStatus, jqXHR)} Optional. Callback that fires upon successful retrieval of data.
 
 
 ##### Example
@@ -83,7 +83,7 @@ Retrieve articles currently popular on the Hub website.
 ##### Parameters
 
 1. __data__ {PlainObject} Optional. A set of key/value pairs that filter the pool of articles returned. See available filters below.
-1. __callback__ {Lamdba(data, jqXHR)} Optional. Callback that fires upon successful retrieval of data.
+1. __callback__ {Lamdba(data, textStatus, jqXHR)} Optional. Callback that fires upon successful retrieval of data.
 
 ##### Example
 
@@ -111,7 +111,7 @@ Finds articles related to a given article. Relationships are made first by commo
 
 1. __id__ {Integer} Required. ID of the article to lookup other articles against.
 1. __data__ {PlainObject} Optional. A set of key/value pairs that filter the pool of articles returned. See available filters below.
-1. __callback__ {Lamdba(data, jqXHR)} Optional. Callback that fires upon successful retrieval of data.
+1. __callback__ {Lamdba(data, textStatus, jqXHR)} Optional. Callback that fires upon successful retrieval of data.
 
 ##### Example
 
@@ -136,7 +136,7 @@ Gets a payload from the API.
 
 1. __endpoint__ {String} Required. Endpoint of the API to query.
 1. __data__ {PlainObject} Optional. A set of key/value pairs that filter the pool of articles returned. See available filters below.
-1. __callback__ {Lamdba(data, jqXHR)} Optional. Callback that fires upon successful retrieval of data.
+1. __callback__ {Lamdba(data, textStatus, jqXHR)} Optional. Callback that fires upon successful retrieval of data.
 
 ##### Example
 
