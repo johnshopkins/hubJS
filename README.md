@@ -65,8 +65,8 @@ hubJS.articles.find({
 // Returns the article with the ID of 157 and fires a callback when returned
 hubJS.articles.find({
 	id: 157
-}, function(data, jqXHR) {
-	console.log("The article loaded successfully.");
+}, function(data, textStatus, jqXHR) {
+	// do stuff with the data
 });
 ```
 
@@ -74,6 +74,23 @@ hubJS.articles.find({
 ### hubJS.articles.recent(count, callback)
 
 Retrieves rencent articles.
+
+##### Parameters
+
+1. __count__ {Integer} Required. Number of articles to retrieve
+1. __callback__ {Lamdba(data, textStatus, jqXHR)} Optional. Callback that fires upon successful retrieval of data.
+
+##### Example
+
+```javascript
+// Returns two recent articles
+hubJS.articles.recent(2);
+
+// Returns two recent articles and fires a callback when returned
+hubJS.articles.recent(2, function(data, textStatus, jqXHR) {
+	// do stuff with the data
+});
+```
 
 
 ### hubJS.articles.popular(data, callback)
@@ -98,8 +115,8 @@ hubJS.articles.popular({
 hubJS.articles.popular({
 	source: "hub",
 	topic: "health"
-}, function(data, jqXHR) {
-	console.log("The article loaded successfully.");
+}, function(data, textStatus, jqXHR) {
+	// do stuff with the data
 });
 ```
 
@@ -122,8 +139,8 @@ hubJS.articles.related(157, {
 });
 
 // Returns articles related to article #157 and fires a callback when returned
-hubJS.articles.popular(157, function(data, jqXHR) {
-	console.log("The article loaded successfully.");
+hubJS.articles.popular(157, function(data, textStatus, jqXHR) {
+	// do stuff with the data
 });
 ```
 
@@ -147,8 +164,8 @@ hubJS.get("topics");
 // Returns items from the topics payload and fires a callback when returned
 hubJS.getr("topics", {
 	per_page: 10
-}, function(data, jqXHR) {
-	console.log("The article loaded successfully.");
+}, function(data, textStatus, jqXHR) {
+	// do stuff with the data
 });
 ```
 
