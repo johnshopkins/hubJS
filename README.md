@@ -171,8 +171,8 @@ hubJS.getr("topics", {
 
 ## Available filters
 1. __id__ {Int} Article ID. If used, only one article will be returned
-1. __tag__ {String} Comma-separated list of tag slugs or IDs
-1. __topic__ {String} Comma-separated list of topic slugs or IDs
+1. __tags__ {String} Comma-separated list of tag slugs or IDs
+1. __topics__ {String} Comma-separated list of topic slugs or IDs
 1. __publish_date__ {String} "YYYY-MM-DD" for a single date; "YYYY-MM-DD,YYYY-MM-DD" for a date range
 1. __order_by__ {String} [field]|[asc|desc] Default: "publish_date|desc"
 1. __source__ {String} Publication source ("hub", "magazine" or "gazette")
