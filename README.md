@@ -120,7 +120,7 @@ hubJS.articles.popular({
 });
 ```
 
-### hub.JS.articles.related(id, data, callback)
+### hubJS.articles.related(id, data, callback)
 
 Finds articles related to a given article. Relationships are made first by common tags. If there are no tag relationships, topic relationships are searched for.
 
