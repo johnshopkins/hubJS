@@ -74,8 +74,7 @@ asyncTest("hubJS.get() : lookup with ID", function () {
 
 asyncTest("hubJS.articles.find() : lookup with no data", function () {
 	hubJS.init(init);
-	var response = hubJS.articles.find();
-	response.done(function (payload) {
+	var response = hubJS.articles.find({}, function (payload) {
 		var length = payload._embedded.articles.length;
 		equal(length, 5);
 		start();
@@ -117,8 +116,8 @@ asyncTest("hubJS.articles.recent()", function () {
 
 asyncTest("hubJS.articles.recent()", function () {
 	hubJS.init(init);
-	response = hubJS.articles.recent();
-	response.done(function (payload) {
+	response = hubJS.articles.recent(null, function (payload) {
+		console.log(payload._embedded.articles);
 		var length = payload._embedded.articles.length;
 		equal(length, 5);
 		start();

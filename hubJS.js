@@ -1,4 +1,4 @@
-var hubJS = (function (global, $) {
+var hubJS = (function (ajax) {
 
 	/**
 	 * Hub library object for reference inside
@@ -58,13 +58,11 @@ var hubJS = (function (global, $) {
 				delete data.id;
 			}
 
-	        return $.ajax({
+	        return ajax.get({
 	            url: _library.baseUrl + endpoint,
-	            dataType: "jsonP",
-	            data: data,
-	            success: callback,
-	            fail: _library.userSettings.fail
-	        });
+	            dataType: "jsonp",
+	            data: data
+	        }).then(callback, _library.userSettings.fail);
 	    },
 
 	    /**
@@ -93,7 +91,7 @@ var hubJS = (function (global, $) {
 			 * @return {jqXHR}    				See: http://api.jquery.com/jQuery.ajax/#jqXHR
 			 */
 			recent: function(count, callback) {
-				var data = _library.utility.extend({}, { per_page: 5 }, { per_page: count });
+				var data = { per_page: _library.utility.isNumeric(count) ? count : 5 };
 				return _library.articles.find(data, callback);
 			},
 
@@ -181,8 +179,11 @@ var hubJS = (function (global, $) {
 					}
 				}
 				return arguments[0];
-			}	
+			},
+			isNumeric: function(obj) {
+				return !isNaN( parseFloat(obj) ) && isFinite( obj );
+			}
 		}
 	}
 
-})(window, jQuery);
+})(simplyAjax);
