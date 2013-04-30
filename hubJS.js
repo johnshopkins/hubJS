@@ -164,7 +164,7 @@ var hubJS = (function (global, $) {
 			 */
 			extractEmbeddedItemIds: function(payload, object) {
 				var target = (payload && payload._embedded && payload._embedded[object]) || [];
-				return $.map(target, function (value, i) {
+				return target.map(function (value, i) {
 					return value.id
  				});
 			},
