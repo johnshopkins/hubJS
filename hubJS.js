@@ -37,7 +37,7 @@ var hubJS = (function (global, $) {
 		 */
 		init: function (settings) {
 			_library = this;
-			_library.userSettings = $.extend({}, _defaultSettings, settings);
+			_library.userSettings = _library.utility.extend({}, _defaultSettings, settings);
 		},
 
 		/**
@@ -50,7 +50,7 @@ var hubJS = (function (global, $) {
 		 */
 		get: function(endpoint, data, callback) {
 
-			var data = $.extend({}, data);
+			var data = _library.utility.extend({}, data);
 			data.v = _library.userSettings.version;
 
 			if (data.id) {
@@ -81,7 +81,7 @@ var hubJS = (function (global, $) {
 			 * @return {jqXHR}    				See: http://api.jquery.com/jQuery.ajax/#jqXHR
 			 */
 			find: function(data, callback) {
-				var data = $.extend({}, data);
+				var data = _library.utility.extend({}, data);
 				return _library.get("articles", data, callback);
 			},
 
@@ -93,7 +93,7 @@ var hubJS = (function (global, $) {
 			 * @return {jqXHR}    				See: http://api.jquery.com/jQuery.ajax/#jqXHR
 			 */
 			recent: function(count, callback) {
-				var data = $.extend({}, { per_page: 5 }, { per_page: count });
+				var data = _library.utility.extend({}, { per_page: 5 }, { per_page: count });
 				return _library.articles.find(data, callback);
 			},
 
@@ -105,7 +105,7 @@ var hubJS = (function (global, $) {
 			 * @return {jqXHR}    				See: http://api.jquery.com/jQuery.ajax/#jqXHR
 			 */
 			popular: function(data, callback) {
-				var data = $.extend({}, data, { order_by: "score", score: "trending" });
+				var data = _library.utility.extend({}, data, { order_by: "score", score: "trending" });
 				return _library.get("articles", data, callback);
 			},
 
@@ -122,7 +122,7 @@ var hubJS = (function (global, $) {
 				// if the user passed additional related IDs, merge them with ours
 				var ids = data && data.excluded_ids ? id + "," + data.excluded_ids : id;
 
-				var data = $.extend({}, data, { excluded_ids: ids });
+				var data = _library.utility.extend({}, data, { excluded_ids: ids });
 
 				var toReturn;
 				
@@ -130,13 +130,13 @@ var hubJS = (function (global, $) {
 
 				var relatedByTags = article.then(function (payload) {
 					var tagIds = _library.utility.extractEmbeddedItemIds(payload, "tags");
-					var tagData = $.extend({}, data, { tags: tagIds.join(",") });
+					var tagData = _library.utility.extend({}, data, { tags: tagIds.join(",") });
 					return _library.articles.find(tagData);
 				});
 
 				var relatedByTopics = article.then(function (payload) {
 					var topicIds = _library.utility.extractEmbeddedItemIds(payload, "topics");
-					var topicData = $.extend({}, data, { topics: topicIds.join(",") });
+					var topicData = _library.utility.extend({}, data, { topics: topicIds.join(",") });
 					return relatedByTopics = _library.articles.find(topicData);
 				});
 
@@ -167,7 +167,21 @@ var hubJS = (function (global, $) {
 				return $.map(target, function (value, i) {
 					return value.id
  				});
-			}
+			},
+			/**
+			 * Mimics jQuery.extend()
+			 * @return new object
+			 */
+			extend: function() {
+				for (var i = 1, len = arguments.length; i < len; i++) {
+					for (var key in arguments[i]) {
+						if (arguments[i].hasOwnProperty(key)) {
+							arguments[0][key] = arguments[i][key];
+						}
+					}
+				}
+				return arguments[0];
+			}	
 		}
 	}
 
