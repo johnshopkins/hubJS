@@ -117,7 +117,6 @@ asyncTest("hubJS.articles.recent()", function () {
 asyncTest("hubJS.articles.recent()", function () {
 	hubJS.init(init);
 	response = hubJS.articles.recent().then(function (payload) {
-		console.log(payload._embedded.articles);
 		var length = payload._embedded.articles.length;
 		equal(length, 5);
 		start();
