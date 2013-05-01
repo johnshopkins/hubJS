@@ -14,7 +14,7 @@ var init = {
 
 
 test("hubJS.init() : version", function () {
-	hubJS.init({});
+	hubJS.init();
 	equal(JSON.stringify(hubJS.userSettings), JSON.stringify({version: 0}));
 
 	hubJS.init({version:0});
@@ -52,8 +52,8 @@ test("hubJS.extractEmbeddedItemIds()", function () {
 });
 
 asyncTest("hubJS.get() : lookup with no data", function () {
-	hubJS.init(init);
-	var response = hubJS.get("articles", {}, function (payload) {
+	hubJS.init();
+	var response = hubJS.get("articles", {}).then(function (payload) {
 		var length = payload._embedded.articles.length;
 		equal(length, 5);
 		start();
@@ -61,11 +61,11 @@ asyncTest("hubJS.get() : lookup with no data", function () {
 });
 
 asyncTest("hubJS.get() : lookup with ID", function () {
-	hubJS.init(init);
+	hubJS.init();
 
 	var id = 157;
 
-	var response = hubJS.get("articles", {id: id}, function (payload) {
+	var response = hubJS.get("articles", {id: id}).then(function (payload) {
 		var foundId = payload.id;
 		equal(foundId, id);
 		start();
@@ -73,9 +73,8 @@ asyncTest("hubJS.get() : lookup with ID", function () {
 });
 
 asyncTest("hubJS.articles.find() : lookup with no data", function () {
-	hubJS.init(init);
-	var response = hubJS.articles.find();
-	response.done(function (payload) {
+	hubJS.init();
+	var response = hubJS.articles.find().then(function (payload) {
 		var length = payload._embedded.articles.length;
 		equal(length, 5);
 		start();
@@ -83,11 +82,11 @@ asyncTest("hubJS.articles.find() : lookup with no data", function () {
 });
 
 asyncTest("hubJS.articles.find() : lookup with ID", function () {
-	hubJS.init(init);
+	hubJS.init();
 
 	var id = 157;
 
-	var response = hubJS.articles.find({id: id}, function (payload) {
+	var response = hubJS.articles.find({id: id}).then(function (payload) {
 		var foundId = payload.id;
 		equal(foundId, id);
 		start();
@@ -95,11 +94,11 @@ asyncTest("hubJS.articles.find() : lookup with ID", function () {
 });
 
 asyncTest("hubJS.articles.find() : lookup with ID", function () {
-	hubJS.init(init);
+	hubJS.init();
 
 	var id = 157;
 
-	var response = hubJS.articles.find({id: id}, function (payload) {
+	var response = hubJS.articles.find({id: id}).then(function (payload) {
 		var foundId = payload.id;
 		equal(foundId, id);
 		start();
@@ -107,8 +106,8 @@ asyncTest("hubJS.articles.find() : lookup with ID", function () {
 });
 
 asyncTest("hubJS.articles.recent()", function () {
-	hubJS.init(init);
-	var response = hubJS.articles.recent(2, function (payload) {
+	hubJS.init();
+	var response = hubJS.articles.recent(2).then(function (payload) {
 		var length = payload._embedded.articles.length;
 		equal(length, 2);
 		start();
@@ -116,9 +115,8 @@ asyncTest("hubJS.articles.recent()", function () {
 });
 
 asyncTest("hubJS.articles.recent()", function () {
-	hubJS.init(init);
-	response = hubJS.articles.recent();
-	response.done(function (payload) {
+	hubJS.init();
+	response = hubJS.articles.recent().then(function (payload) {
 		var length = payload._embedded.articles.length;
 		equal(length, 5);
 		start();
@@ -126,8 +124,8 @@ asyncTest("hubJS.articles.recent()", function () {
 });
 
 asyncTest("hubJS.articles.related()", function () {
-	hubJS.init(init);
-	var response = hubJS.articles.related(157, {}, function (payload) {
+	hubJS.init();
+	var response = hubJS.articles.related(1009).then(function (payload) {
 		var length = payload._embedded.articles.length;
 		equal(length, 5);
 		start();
@@ -135,8 +133,8 @@ asyncTest("hubJS.articles.related()", function () {
 });
 
 asyncTest("hubJS.articles.related(): get back two articles", function () {
-	hubJS.init(init);
-	var response = hubJS.articles.related(157, { per_page: 2}, function (payload) {
+	hubJS.init();
+	var response = hubJS.articles.related(157, { per_page: 2}).then(function (payload) {
 		var length = payload._embedded.articles.length;
 		equal(length, 2);
 		start();
@@ -144,10 +142,23 @@ asyncTest("hubJS.articles.related(): get back two articles", function () {
 });
 
 asyncTest("hubJS.articles.related(): with a passed excluded ID", function () {
-	hubJS.init(init);
-	var response = hubJS.articles.related(157, { excluded_ids: 123 }, function (payload) {
+	hubJS.init();
+	var response = hubJS.articles.related(157, { excluded_ids: 123 }).then(function (payload) {
 		var length = payload._embedded.articles.length;
 		equal(length, 5);
+		start();
+	});
+});
+
+asyncTest("Error detection", function () {
+	hubJS.init();
+	var response = hubJS.get("test").then(function (payload) {
+		if (payload.error) {
+	        var httpStatus = payload.statusCode;
+	        var message = payload.message;
+	    }
+		equal(httpStatus, 404);
+		equal(message, "There doesn't seem to be a test endpoint.");
 		start();
 	});
 });
