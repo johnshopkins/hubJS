@@ -45,7 +45,7 @@ var hubJS = (function (ajax) {
 		 * 
 		 * @param  {string} 	endpoint  	API endpoint
 		 * @param  {object} 	data     	Data to be sent to the server
-		 * @return {jqXHR}    				See: http://api.jquery.com/jQuery.ajax/#jqXHR
+		 * @return {Object}    	promise
 		 */
 		get: function(endpoint, data) {
 
@@ -74,7 +74,7 @@ var hubJS = (function (ajax) {
 			 * Find an article or articles
 			 * 
 			 * @param  {object} 	data     	Data to be sent to the server
-			 * @return {jqXHR}    				See: http://api.jquery.com/jQuery.ajax/#jqXHR
+			 * @return {Object}    	promise
 			 */
 			find: function(data) {
 				var data = _library.utility.extend({}, data);
@@ -85,7 +85,7 @@ var hubJS = (function (ajax) {
 			 * Convenience method to find recent articles
 			 * 
 			 * @param  {integer} 	count	 	Number of articles to retrieve
-			 * @return {jqXHR}    				See: http://api.jquery.com/jQuery.ajax/#jqXHR
+			 * @return {Object}    	promise
 			 */
 			recent: function(count) {
 				var data = { per_page: _library.utility.isNumeric(count) ? count : 5 };
@@ -96,7 +96,7 @@ var hubJS = (function (ajax) {
 			 * Find popular articles
 			 * 
 			 * @param  {object} 	data     	Data to be sent to the server
-			 * @return {jqXHR}    				See: http://api.jquery.com/jQuery.ajax/#jqXHR
+			 * @return {Object}    	promise
 			 */
 			popular: function(data) {
 				var data = _library.utility.extend({}, data, { order_by: "score", score: "trending" });
@@ -108,7 +108,7 @@ var hubJS = (function (ajax) {
 			 * 
 			 * @param  {integer} 	id        	ID of article to lookup other articles against
 			 * @param  {object} 	data     	Data to be sent to the server
-			 * @return {deferred}    			See: http://api.jquery.com/category/deferred-object/
+			 * @return {Object}    	promise
 			 */
 			related: function(id, data) {
 
