@@ -149,3 +149,16 @@ asyncTest("hubJS.articles.related(): with a passed excluded ID", function () {
 		start();
 	});
 });
+
+asyncTest("Error detection", function () {
+	hubJS.init();
+	var response = hubJS.get("test").then(function (payload) {
+		if (payload.error) {
+	        var httpStatus = payload.statusCode;
+	        var message = payload.message;
+	    }
+		equal(httpStatus, 404);
+		equal(message, "There doesn't seem to be a test endpoint.");
+		start();
+	});
+});
