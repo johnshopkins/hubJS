@@ -45,10 +45,9 @@ var hubJS = (function (ajax) {
 		 * 
 		 * @param  {string} 	endpoint  	API endpoint
 		 * @param  {object} 	data     	Data to be sent to the server
-		 * @param  {function} 	callback 	Function to run when request is successful
 		 * @return {jqXHR}    				See: http://api.jquery.com/jQuery.ajax/#jqXHR
 		 */
-		get: function(endpoint, data, callback) {
+		get: function(endpoint, data) {
 
 			var data = _library.utility.extend({}, data);
 			data.v = _library.userSettings.version;
@@ -62,7 +61,7 @@ var hubJS = (function (ajax) {
 	            url: _library.baseUrl + endpoint,
 	            dataType: "jsonp",
 	            data: data
-	        }).then(callback, _library.userSettings.fail);
+	        });
 	    },
 
 	    /**
@@ -75,36 +74,33 @@ var hubJS = (function (ajax) {
 			 * Find an article or articles
 			 * 
 			 * @param  {object} 	data     	Data to be sent to the server
-			 * @param  {function} 	callback 	Function to run when request is successful
 			 * @return {jqXHR}    				See: http://api.jquery.com/jQuery.ajax/#jqXHR
 			 */
-			find: function(data, callback) {
+			find: function(data) {
 				var data = _library.utility.extend({}, data);
-				return _library.get("articles", data, callback);
+				return _library.get("articles", data);
 			},
 
 			/**
 			 * Convenience method to find recent articles
 			 * 
-			 * @param  {object} 	data     	Data to be sent to the server
 			 * @param  {integer} 	count	 	Number of articles to retrieve
 			 * @return {jqXHR}    				See: http://api.jquery.com/jQuery.ajax/#jqXHR
 			 */
-			recent: function(count, callback) {
+			recent: function(count) {
 				var data = { per_page: _library.utility.isNumeric(count) ? count : 5 };
-				return _library.articles.find(data, callback);
+				return _library.articles.find(data);
 			},
 
 			/**
 			 * Find popular articles
 			 * 
 			 * @param  {object} 	data     	Data to be sent to the server
-			 * @param  {function} 	callback 	Function to run when request is successful
 			 * @return {jqXHR}    				See: http://api.jquery.com/jQuery.ajax/#jqXHR
 			 */
-			popular: function(data, callback) {
+			popular: function(data) {
 				var data = _library.utility.extend({}, data, { order_by: "score", score: "trending" });
-				return _library.get("articles", data, callback);
+				return _library.get("articles", data);
 			},
 
 			/**
@@ -112,10 +108,9 @@ var hubJS = (function (ajax) {
 			 * 
 			 * @param  {integer} 	id        	ID of article to lookup other articles against
 			 * @param  {object} 	data     	Data to be sent to the server
-			 * @param  {function} 	callback 	Function to run when request is successful
 			 * @return {deferred}    			See: http://api.jquery.com/category/deferred-object/
 			 */
-			related: function(id, data, callback) {
+			related: function(id, data) {
 
 				// if the user passed additional related IDs, merge them with ours
 				var ids = data && data.excluded_ids ? id + "," + data.excluded_ids : id;
