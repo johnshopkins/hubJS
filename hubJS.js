@@ -112,32 +112,43 @@ var hubJS = (function (ajax) {
 			 */
 			related: function(id, data) {
 
+				var deferred = new Deferred();
+
 				// if the user passed additional related IDs, merge them with ours
 				var ids = data && data.excluded_ids ? id + "," + data.excluded_ids : id;
 
 				var data = _library.utility.extend({}, data, { excluded_ids: ids });
 
-				var toReturn;
-				
+				// get the article data
 				var article = _library.articles.find({id: id});
-
-				var relatedByTags = article.then(function (payload) {
-					var tagIds = _library.utility.extractEmbeddedItemIds(payload, "tags");
+				var articlePayload;
+				
+				// find articles with the same tags
+				var relatedByTag = article.then(function (payload) {
+					articlePayload = payload;
+					var tagIds = _library.utility.extractEmbeddedItemIds(articlePayload, "tags");
 					var tagData = _library.utility.extend({}, data, { tags: tagIds.join(",") });
 					return _library.articles.find(tagData);
+
+				}).then(function (payload) {
+
+					// if there are articles in the payload, return them and continue in down the pipe
+					if (payload._embedded.articles) {
+						return payload;
+
+					// if there are not articles, get articles related by topic
+					} else {
+						var topicIds = _library.utility.extractEmbeddedItemIds(articlePayload, "topics");
+						var topicData = _library.utility.extend({}, data, { topics: topicIds.join(",") });
+						return _library.articles.find(topicData);
+					}
+
+				// send the payload back
+				}).then(function (payload) {
+					deferred.resolve(payload);
 				});
 
-				var relatedByTopics = article.then(function (payload) {
-					var topicIds = _library.utility.extractEmbeddedItemIds(payload, "topics");
-					var topicData = _library.utility.extend({}, data, { topics: topicIds.join(",") });
-					return relatedByTopics = _library.articles.find(topicData);
-				});
-
-				relatedByTags.done(function (payload) {
-					toReturn = (payload._embedded.articles) ? "tags" : "topics";
-				});
-
-				return (toReturn == "tags") ? relatedByTags.done(callback) : relatedByTopics.done(callback);
+				return deferred.promise;
 			}
 		},
 
