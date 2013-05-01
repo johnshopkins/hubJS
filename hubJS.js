@@ -179,14 +179,6 @@ var simplyAjax = (function () {
 		return xhr;
 	}
 
-	function random() {
-		return (((1+Math.random())*0x10000)|0).toString(16).substring(1);
-	}
-
-	function randomCallbackName() {
-		return "simplyAjax_" + random()+random()+random()+random()+random();
-	}
-
 	/**
 	 * Attach a script element to the current page
 	 * referencing the URL we need to make a GET
@@ -198,30 +190,6 @@ var simplyAjax = (function () {
 		var script = document.createElement("script");
 		script.src = url;
 		document.body.appendChild(script);
-	}
-
-	/**
-	 * Create a query string from an object
-	 * containing key: value pairs
-	 * @param  {Object} object
-	 * @return {string} Query string
-	 */
-	function createQueryString(object) {
-
-		var queryString = "";
-		var amp = false;
-
-		for (var key in object) {
-			if (amp) {
-				queryString += "&";
-			}
-			queryString += key + "=" + object[key];
-
-			// start adding the ampersand from now on
-			amp = true;
-		}
-
-		return "?" + queryString;
 	}
 
 	return {
@@ -244,18 +212,18 @@ var simplyAjax = (function () {
 			if (obj.dataType && obj.dataType.toLowerCase() == "jsonp") {
 
 				// assign success callback to a function on ajax object
-				var cb = randomCallbackName();
+				var cb = simplyAjax.utility.randomCallbackName();
 				simplyAjax[cb] = deferred.resolve;
 
 				// assign callback in URL
 				obj.data.callback = "simplyAjax." + cb;
-				var url = obj.url + createQueryString(obj.data);
+				var url = obj.url + simplyAjax.utility.createQueryString(obj.data);
 				
 				crossDomainRequest(url);
 
 			} else {
 
-				var url = obj.url + createQueryString(obj.data);
+				var url = obj.url + simplyAjax.utility.createQueryString(obj.data);
 
 				var xhr = getXHR();
 				
@@ -264,9 +232,9 @@ var simplyAjax = (function () {
 					if (xhr.readyState === 4) {
 
 						if (xhr.status == 200) {
-							deferred.resolve(xhr.responseText, xhr.status, xhr.statusText);
+							deferred.resolve(xhr.responseText, xhr.status);
 						} else {
-							deferred.reject(xhr.status, xhr.statusText);
+							deferred.reject(xhr.status);
 						}
 					}	
 				}
@@ -277,6 +245,41 @@ var simplyAjax = (function () {
 
 			return deferred.promise;
 		
+		},
+
+		utility: {
+			/**
+			 * Create a query string from an object
+			 * containing key: value pairs
+			 * @param  {Object} object
+			 * @return {string} Query string
+			 */
+			createQueryString: function(object) {
+
+				var queryString = "";
+				var amp = false;
+
+				for (var key in object) {
+					if (amp) {
+						queryString += "&";
+					}
+					queryString += key + "=" + object[key];
+
+					// start adding the ampersand from now on
+					amp = true;
+				}
+
+				return "?" + queryString;
+			},
+
+			random: function() {
+				return Math.floor(Math.random() * (100000 * 100000));
+			},
+
+			randomCallbackName: function() {
+				var timestamp = new Date().getTime();
+				return "simplyAjax_" + simplyAjax.utility.random() + "_" + timestamp + "_" + simplyAjax.utility.random();
+			}
 		}
 	}
 })();
