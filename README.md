@@ -24,12 +24,14 @@ Initializes hubJS with user settings. This function must run before any [getter 
 
 
 ##### Available settings
+1. __key__ {Int} Required. API key (see [API docs](http://api.hub.jhu.edu/docs) for help).
 1. __version__ {Int} API version (see [API docs](http://api.hub.jhu.edu/docs) for help). Defaults to current version.
 
 ##### Example
 
 ```javascript
 hubJS.init({
+	key: "abcdefg",
 	version: 0
 });
 ```
@@ -176,7 +178,7 @@ HubJS promises loosely follow the [CommonJS Pomises/A proposal](http://wiki.comm
 Currently, hubJS promises do not support the `errorHandler` and `progressHandler` arguments. More details below.
 
 ### errorHandler
-All requests made from hubJS use [JSONP](http://en.wikipedia.org/wiki/JSONP) to overcome the cross-domain limitation of AJAX requests. The downside of using JSONP is that does not support error handling, so requests always return with a status of 200; therefore, the `fulfilledHandler` is _always_ fired even if there is a problem with the request. In a future release of hubJS, we're looking into resolving this problem, but for now, here is the work-around:
+All requests made from hubJS use [JSONP](http://en.wikipedia.org/wiki/JSONP) to overcome the cross-domain limitation of AJAX requests. The downside of using JSONP is that does not support error handling, so requests always return with a status of 200; therefore, the `fulfilledHandler` is _always_ fired even if there is a problem with the request. In a future release of hubJS, [we're looking into resolving this problem](https://github.com/johnshopkins/hubJS/issues/1), but for now, here is the work-around:
 
 ```javascript
 hubJS.articles.find().then(function(data, status) {
