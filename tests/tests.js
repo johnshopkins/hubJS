@@ -9,7 +9,7 @@
  */
 var init = {
 	version: 0,
-	key: "70a252dc26486819e5817371a48d6e3b5989cb2a"
+	key: "3c862c46d83c108a30c6660c7b91b560e4f76199"
 }
 
 hubJS.baseUrl = "http://local.api.hub.jhu.edu/";
