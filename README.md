@@ -1,6 +1,8 @@
 # hubJS
 
-The JavaScript library for interacting with the Hub API.
+New docs coming soon.
+
+<!-- The JavaScript library for interacting with the Hub API.
 
 
 ## Usage
@@ -196,4 +198,4 @@ hubJS.articles.find().then(function(data, status) {
 Check for the `data.error` object the Hub API sends back with bad responses. You can access `data.statusCode` and `data.message` for more detailed information about the failure of the request.
 
 ### progressHandler
-A feature that has yet to be implemented in hubJS.
+A feature that has yet to be implemented in hubJS. -->

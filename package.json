@@ -1,0 +1,29 @@
+{
+  "name": "hubJS",
+  "version": "3.0.0",
+  "description": "A javascript library for interacting with the Hub API.",
+  "main": "index.js",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "./node_modules/.bin/mocha --reporter list"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/johnshopkins/hubJS.git"
+  },
+  "author": "Jen Wachter",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/johnshopkins/hubJS/issues"
+  },
+  "homepage": "https://github.com/johnshopkins/hubJS",
+  "devDependencies": {
+    "gulp": "~3.8.6",
+    "gulp-tasks": "git+ssh://git@github.com:johnshopkins/gulp-tasks.git",
+    "chai": "~1.9.0",
+    "mocha": "~1.17.1",
+    "sinon": "~1.8.1"
+  }
+}
