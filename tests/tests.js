@@ -12,7 +12,7 @@ var init = {
 	key: "3c862c46d83c108a30c6660c7b91b560e4f76199"
 }
 
-hubJS.baseUrl = "http://local.api.hub.jhu.edu/";
+hubJS.baseUrl = "http://api.hub.jhu.edu/";
 
 
 test("hubJS.init() : version", function () {
@@ -58,10 +58,14 @@ test("hubJS.extractEmbeddedItemIds()", function () {
 	deepEqual(set, expected);
 });
 
+
+/**
+ * Articles
+ */
+
 asyncTest("hubJS.get() : lookup with no data", function () {
 	hubJS.init(init);
 	var response = hubJS.get("articles", {}).then(function (payload) {
-		console.log(payload);
 		var length = payload._embedded.articles.length;
 		equal(length, 5);
 		start();
@@ -158,6 +162,86 @@ asyncTest("hubJS.articles.related(): with a passed excluded ID", function () {
 	});
 });
 
+
+/**
+ * Events
+ */
+
+asyncTest("hubJS.get() : lookup with no data", function () {
+	hubJS.init(init);
+	var response = hubJS.get("events", {}).then(function (payload) {
+		var length = payload._embedded.events.length;
+		equal(length, 5);
+		start();
+	});
+});
+
+asyncTest("hubJS.get() : lookup with ID", function () {
+	hubJS.init(init);
+
+	var id = 3707;
+
+	var response = hubJS.get("events", {id: id}).then(function (payload) {
+		var foundId = payload.id;
+		equal(foundId, id);
+		start();
+	});
+});
+
+asyncTest("hubJS.events.find() : lookup with no data", function () {
+	hubJS.init(init);
+	var response = hubJS.events.find().then(function (payload) {
+		var length = payload._embedded.events.length;
+		equal(length, 5);
+		start();
+	});
+});
+
+asyncTest("hubJS.events.find() : lookup with ID", function () {
+	hubJS.init(init);
+
+	var id = 3707;
+
+	var response = hubJS.events.find({id: id}).then(function (payload) {
+		var foundId = payload.id;
+		equal(foundId, id);
+		start();
+	});
+});
+
+asyncTest("hubJS.events.find() : lookup with ID", function () {
+	hubJS.init(init);
+
+	var id = 3707;
+
+	var response = hubJS.events.find({id: id}).then(function (payload) {
+		var foundId = payload.id;
+		equal(foundId, id);
+		start();
+	});
+});
+
+asyncTest("hubJS.events.upcoming()", function () {
+	hubJS.init(init);
+	var response = hubJS.events.upcoming(2).then(function (payload) {
+		var length = payload._embedded.events.length;
+		equal(length, 2);
+		start();
+	});
+});
+
+asyncTest("hubJS.events.upcoming()", function () {
+	hubJS.init(init);
+	response = hubJS.events.upcoming().then(function (payload) {
+		var length = payload._embedded.events.length;
+		equal(length, 5);
+		start();
+	});
+});
+
+/**
+ * Error handling
+ */
 asyncTest("Error detection", function () {
 	hubJS.init();
 	var response = hubJS.get("articles").then(function (payload) {
@@ -166,7 +250,6 @@ asyncTest("Error detection", function () {
 	        var message = payload.message;
 	    }
 		equal(httpStatus, 401);
-		equal(message, "API requests require authentication.");
 		start();
 	});
 });
