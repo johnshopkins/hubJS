@@ -16,26 +16,25 @@ var _defaultSettings = {
  * API base URL
  * @type {String}
  */
-var baseUrl = "http://api.hub.jhu.edu/";
-var userSettings = {};
+var baseUrl = "//api.hub.jhu.edu/";
 
 
 
 var hubJS = function (settings) {
-  userSettings = utils.extend({}, _defaultSettings, settings);
+  this.userSettings = utils.extend({}, _defaultSettings, settings);
 };
 
 /**
  * Gets a payload from the Hub API
- * 
+ *
  * @param  {string}   endpoint    API endpoint
  * @param  {object}   data      Data to be sent to the server
  * @return {Object}     promise
  */
 hubJS.prototype.get = function (endpoint, data) {
   data = utils.extend({}, data);
-  data.v = userSettings.version;
-  data.key = userSettings.key;
+  data.v = this.userSettings.version;
+  data.key = this.userSettings.key;
 
   if (data.id) {
     endpoint = endpoint + "/" + data.id;
@@ -57,7 +56,7 @@ hubJS.prototype.articles = {
 
   /**
    * Find an article or articles
-   * 
+   *
    * @param  {object}   data      Data to be sent to the server
    * @return {Object}     promise
    */
@@ -68,7 +67,7 @@ hubJS.prototype.articles = {
 
   /**
    * Convenience method to find recent articles
-   * 
+   *
    * @param  {integer}  count   Number of articles to retrieve
    * @return {Object}     promise
    */
@@ -79,7 +78,7 @@ hubJS.prototype.articles = {
 
   /**
    * Find popular articles
-   * 
+   *
    * @param  {object}   data      Data to be sent to the server
    * @return {Object}     promise
    */
@@ -90,7 +89,7 @@ hubJS.prototype.articles = {
 
   /**
    * Find articles related to a specific article
-   * 
+   *
    * @param  {integer}  id          ID of article to lookup other articles against
    * @param  {object}   data      Data to be sent to the server
    * @return {Object}     promise
@@ -107,7 +106,7 @@ hubJS.prototype.articles = {
     // get the article data
     var article = this.find({id: id});
     var articlePayload;
-    
+
     // find articles with the same tags
     var relatedByTag = article.then(function (payload) {
       articlePayload = payload;
@@ -135,7 +134,7 @@ hubJS.prototype.articles = {
 
     return deferred.promise;
   }
-  
+
 };
 
 /**
@@ -146,7 +145,7 @@ hubJS.prototype.events = {
 
   /**
    * Find an event or events
-   * 
+   *
    * @param  {object}   data      Data to be sent to the server
    * @return {Object}     promise
    */
@@ -157,7 +156,7 @@ hubJS.prototype.events = {
 
   /**
    * Convenience method to find recent events
-   * 
+   *
    * @param  {integer}  count   Number of events to retrieve
    * @return {Object}     promise
    */
