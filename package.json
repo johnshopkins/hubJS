@@ -23,7 +23,6 @@
     "gulp": "~3.8.6",
     "gulp-tasks": "git+ssh://git@github.com:johnshopkins/gulp-tasks.git",
     "chai": "~1.9.0",
-    "mocha": "~1.17.1",
-    "sinon": "~1.8.1"
+    "mocha": "~1.17.1"
   }
 }
