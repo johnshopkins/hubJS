@@ -104,8 +104,13 @@ hubJS.prototype.articles = {
     data = utils.extend({}, data, { excluded_ids: ids });
 
     // get the article data
-    var article = this.find({id: id});
-    var articlePayload;
+    var findData = { id: id };
+
+    // if a source is passed (like atwork), honor it
+    if (data.source !== "undefined")  findData.source = data.source;
+
+    var article = this.find(findData);
+		var articlePayload;
 
     // find articles with the same tags
     var relatedByTag = article.then(function (payload) {
